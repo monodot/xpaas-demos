@@ -55,6 +55,10 @@ When you want to terminate, you can use the following, which will delete the Rep
 
 The example can also be built and run using the included S2I template quickstart-template.json.
 
+Before you start, make sure you have installed the Fuse Integration Services image streams:
+
+    oc create  -f https://raw.githubusercontent.com/jboss-fuse/application-templates/master/fis-image-streams.json -n openshift
+
 The application can be run directly by first editing the template file and populating S2I build parameters, including the required parameter GIT_REPO and then executing the command:
 
     oc new-app -f quickstart-template.json
