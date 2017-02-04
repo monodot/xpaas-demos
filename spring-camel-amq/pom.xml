@@ -20,10 +20,14 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>jboss-fuse-6/fis-java-openshift:1.0</docker.from>
+    <docker.from>registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:1.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
+    <fabric8.env.ACTIVEMQ_BROKER_URL>ssl://broker-amq-tcp-ssl:61617</fabric8.env.ACTIVEMQ_BROKER_URL>
+    <fabric8.env.ACTIVEMQ_BROKER_USERNAME>username</fabric8.env.ACTIVEMQ_BROKER_USERNAME>
+    <fabric8.env.ACTIVEMQ_BROKER_PASSWORD>password</fabric8.env.ACTIVEMQ_BROKER_PASSWORD>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>

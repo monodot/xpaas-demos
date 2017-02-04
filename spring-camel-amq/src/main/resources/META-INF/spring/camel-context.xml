@@ -31,9 +31,9 @@
 
 
   <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="${activemq.broker.url}"/>
-    <property name="userName" value="${activemq.broker.username:#{null}}"/>
-    <property name="password" value="${activemq.broker.password:#{null}}"/>
+    <property name="brokerURL" value="${env.ACTIVEMQ_BROKER_URL:${activemq.broker.url}}"/>
+    <property name="userName" value="${env.ACTIVEMQ_BROKER_USERNAME:${activemq.broker.username:#{null}}}"/>
+    <property name="password" value="${env.ACTIVEMQ_BROKER_PASSWORD:${activemq.broker.password:#{null}}}"/>
   </bean>
 
   <bean primary="true" id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">

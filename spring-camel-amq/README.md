@@ -27,15 +27,12 @@ If you wish to connect to a broker securely using TLS, you can pass the location
 
     mvn clean compile exec:java -Djavax.net.ssl.trustStore=/Users/jmills/keystores/client.ts -Djavax.net.ssl.trustStorePassword=changeit
 
-### Deploying the example in OpenShift
+### Running the example in your local OpenShift
 
+If you are running OpenShift locally (e.g. through `oc cluster up`, or the CDK)), then the example can be built and deployed using a single goal:
 
-
-It is assumed that OpenShift platform is already running. If not you can find details how to [Install OpenShift at your site](https://docs.openshift.com/enterprise/3.1/install_config/install/index.html).
-
-The example can be built and deployed using a single goal:
-
-    mvn -Pf8-deploy
+    mvn -Pf8-local-deploy \
+        -Dfabric8.env.ACTIVEMQ_BROKER_URL=ssl://broker-amq-tcp-ssl:61617
 
 When the example runs in OpenShift, you can use the OpenShift client tool to inspect the status
 
@@ -50,6 +47,9 @@ Then find the name of the pod that runs this quickstart, and output the logs fro
 You can also use the OpenShift [web console](https://docs.openshift.com/enterprise/3.1/getting_started/developers/developers_console.html#tutorial-video) to manage the
 running pods, and view logs and much more.
 
+When you want to terminate, you can use the following, which will delete the ReplicationController and stop the pod:
+
+    oc delete rc spring-camel-amq
 
 ### Running the example using OpenShift S2I template
 
