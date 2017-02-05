@@ -323,6 +323,10 @@
                   {
                     "name": "ACTIVEMQ_BROKER_PASSWORD",
                     "value": "${ACTIVEMQ_BROKER_PASSWORD}"
+                  },
+                  {
+                    "name": "JAVA_OPTIONS",
+                    "value": "${JAVA_OPTIONS}"
                   }
                 ],
                 "name": "${APP_NAME}",
