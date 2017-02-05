@@ -1,16 +1,13 @@
-# Java Camel Spring QuickStart
+# spring-camel-amq
 
-TODO: Update this document.
-
-This quickstarts run in a Java standalone container, using Spring with Apache Camel.
+This demo runs in a Java standalone container, using Spring with Apache Camel.
 
 This example is implemented using solely a Spring XML file (there is no custom Java code).
-The source code is provided in the following XML file `src/main/resources/META-INF/spring/camel-context.xml`,
-which can be viewed from [github](https://github.com/fabric8io/ipaas-quickstarts/blob/master/quickstart/java/camel-spring/src/main/resources/META-INF/spring/camel-context.xml).
+The source code is provided in the following XML file `src/main/resources/META-INF/spring/camel-context.xml`.
 
-This example uses a timer to trigger a message every 5th second that is routed using a content based router, based on
-the message is regarded as high priority or not.
+This example uses a timer to trigger the publishing of a message to an ActiveMQ broker over the SSL protocol.
 
+This demo is based on the [spring-camel](https://github.com/fabric8-quickstarts/spring-camel) quickstart.
 
 ### Running the example locally
 
@@ -27,14 +24,14 @@ If you wish to connect to a broker securely using TLS, you can pass the location
 
     mvn clean compile exec:java -Djavax.net.ssl.trustStore=/Users/jmills/keystores/client.ts -Djavax.net.ssl.trustStorePassword=changeit
 
-### Running the example in your local OpenShift
+### Running the example in your local OpenShift cluster
 
-If you are running OpenShift locally (e.g. through `oc cluster up`, or the CDK)), then the example can be built and deployed using a single goal:
+If you are running OpenShift locally (e.g. through `oc cluster up`, or the CDK), then the example can be built and deployed using a single goal:
 
     mvn -Pf8-local-deploy \
         -Dfabric8.env.ACTIVEMQ_BROKER_URL=ssl://broker-amq-tcp-ssl:61617
 
-When the example runs in OpenShift, you can use the OpenShift client tool to inspect the status
+When the example runs in OpenShift, you can use the OpenShift client tool to inspect the status.
 
 To list all the running pods:
 
@@ -59,16 +56,17 @@ Before you start, make sure you have installed the Fuse Integration Services ima
 
     oc create  -f https://raw.githubusercontent.com/jboss-fuse/application-templates/master/fis-image-streams.json -n openshift
 
-The application can be run directly by first editing the template file and populating S2I build parameters, including the required parameter GIT_REPO and then executing the command:
-
-    oc new-app -f quickstart-template.json
-
-Alternatively the template file can be used to create an OpenShift application template by executing the command:
+Use the template file to create an OpenShift application template, by executing the command:
 
     oc create -f quickstart-template.json
 
+The template expects to find a secret named `my-secret`, which is where the truststore should be located to enable your client to accept the broker's SSL certificate. To create the secret (where `client.ts` is the filename of your truststore):
 
-### More details
+    oc secrets new my-secret <client.ts>
 
-You can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.
+Then create the new app from the console, optionally setting:
 
+- `MAVEN_MIRROR_URL` - You can use this parameter in the template to set a Maven mirror URL where Maven should look for artifacts.
+- `JAVA_OPTIONS` - if connecting to a broker over SSL, you will need to set the path to your truststore (mounted in the secret) - e.g. `-Djavax.net.ssl.trustStore=/etc/secret-volume/client.ts -Djavax.net.ssl.trustStorePassword=changeit`
+- `ACTIVEMQ_BROKER_URL` - Set this to the connection URL for your broker, e.g. `failover://ssl://yourbroker-amq-tcp-ssl.yourproject.svc.cluster.local:61617`
+- `ACTIVEMQ_BROKER_USERNAME` and `ACTIVEMQ_BROKER_PASSWORD` - set these for broker authentication.
