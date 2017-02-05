@@ -1,4 +1,4 @@
-= xpaas-demos
+# xpaas-demos
 
 Some xPaaS demos for OpenShift:
 
