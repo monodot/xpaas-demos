@@ -4,7 +4,7 @@
   "labels": {},
   "metadata": {
     "annotations": {
-      "description": "Example Camel route which uses a timer to send a message to ActiveMQ every 5 seconds, then consume the same message and log it. Based on the Java Camel Spring QuickStart.",
+      "description": "Example Camel route which uses a timer to send a message to ActiveMQ every 5 seconds, then consume the same message and log it. Based on the Java Camel Spring QuickStart.\n\nRequires a secret, `my-secret` which contains a Java truststore.",
       "iconClass": "icon-java"
     },
     "labels": {},
@@ -58,6 +58,16 @@
       "description": "Extra arguments passed to mvn, e.g. for multi-module builds"
     },
     {
+      "name": "MAVEN_MIRROR_URL",
+      "description": "URL to a local Maven mirror for pulling artifacts",
+      "value": "http://192.168.1.102:8081/nexus/content/groups/public/"
+    },
+    {
+      "name": "JAVA_OPTIONS",
+      "description": "Runtime options passed to the JVM. Truststore settings should be specified here.",
+      "value": "-Djavax.net.ssl.trustStore=/etc/secret-volume/client.ts -Djavax.net.ssl.trustStorePassword=changeit"
+    },
+    {
       "name": "ARTIFACT_DIR",
       "description": "Maven build directory"
     },
@@ -72,6 +82,24 @@
       "name": "BUILD_SECRET",
       "description": "The secret needed to trigger a build",
       "from": "[a-zA-Z0-9]{8}"
+    },
+    {
+      "description": "ActiveMQ URL",
+      "name": "ACTIVEMQ_BROKER_URL",
+      "value": "failover://ssl://broker-amq-tcp-ssl.demo.svc.cluster.local:61617",
+      "required": true
+    },
+    {
+      "description": "ActiveMQ username",
+      "name": "ACTIVEMQ_BROKER_USERNAME",
+      "value": "username",
+      "required": true
+    },
+    {
+      "description": "ActiveMQ password",
+      "name": "ACTIVEMQ_BROKER_PASSWORD",
+      "value": "password",
+      "required": true
     }
   ],
   "objects": [
@@ -200,6 +228,10 @@
               {
                 "name": "MAVEN_ARGS_APPEND",
                 "value": "${MAVEN_ARGS_APPEND}"
+              },
+              {
+                "name": "MAVEN_MIRROR_URL",
+                "value": "${MAVEN_MIRROR_URL}"
               }
             ]
           }
@@ -279,6 +311,20 @@
           "spec": {
             "containers": [
               {
+                "env": [
+                  {
+                    "name": "ACTIVEMQ_BROKER_URL",
+                    "value": "${ACTIVEMQ_BROKER_URL}"
+                  },
+                  {
+                    "name": "ACTIVEMQ_BROKER_USERNAME",
+                    "value": "${ACTIVEMQ_BROKER_USERNAME}"
+                  },
+                  {
+                    "name": "ACTIVEMQ_BROKER_PASSWORD",
+                    "value": "${ACTIVEMQ_BROKER_PASSWORD}"
+                  }
+                ],
                 "name": "${APP_NAME}",
                 "image": "library/${APP_NAME}:latest",
                 "volumeMounts": [
