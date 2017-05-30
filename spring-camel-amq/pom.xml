@@ -28,6 +28,10 @@
     <fabric8.env.ACTIVEMQ_BROKER_URL>ssl://broker-amq-tcp-ssl:61617</fabric8.env.ACTIVEMQ_BROKER_URL>
     <fabric8.env.ACTIVEMQ_BROKER_USERNAME>username</fabric8.env.ACTIVEMQ_BROKER_USERNAME>
     <fabric8.env.ACTIVEMQ_BROKER_PASSWORD>password</fabric8.env.ACTIVEMQ_BROKER_PASSWORD>
+    <fabric8.env.TRUSTSTORE_PATH>/etc/amq-client-secret/client.ts</fabric8.env.TRUSTSTORE_PATH>
+    <fabric8.env.TRUSTSTORE_PASSWORD>changeit</fabric8.env.TRUSTSTORE_PASSWORD>
+    <fabric8.env.KEYSTORE_PATH>/etc/amq-client-secret/client.ks</fabric8.env.KEYSTORE_PATH>
+    <fabric8.env.KEYSTORE_PASSWORD>changeit</fabric8.env.KEYSTORE_PASSWORD>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>

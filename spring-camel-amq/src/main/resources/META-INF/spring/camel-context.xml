@@ -29,11 +29,22 @@
   <context:property-placeholder location="classpath:application.properties"
                                 ignore-resource-not-found="true"/>
 
-
+<!--
   <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
     <property name="brokerURL" value="${env.ACTIVEMQ_BROKER_URL:${activemq.broker.url}}"/>
     <property name="userName" value="${env.ACTIVEMQ_BROKER_USERNAME:${activemq.broker.username:#{null}}}"/>
     <property name="password" value="${env.ACTIVEMQ_BROKER_PASSWORD:${activemq.broker.password:#{null}}}"/>
+  </bean>
+-->
+
+  <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQSslConnectionFactory">
+    <property name="brokerURL" value="${env.ACTIVEMQ_BROKER_URL:${activemq.broker.url}}"/>
+    <property name="userName" value="${env.ACTIVEMQ_BROKER_USERNAME:${activemq.broker.username:#{null}}}"/>
+    <property name="password" value="${env.ACTIVEMQ_BROKER_PASSWORD:${activemq.broker.password:#{null}}}"/>
+    <property name="trustStore" value="${env.TRUSTSTORE_PATH:${truststore.path:#{/etc/amq-client-secret/client.ts}}}"/>
+    <property name="trustStorePassword" value="${env.TRUSTSTORE_PASSWORD:${truststore.password:#{changeit}}}"/>
+    <property name="keyStore" value="${env.KEYSTORE_PATH:${keystore.path:#{/etc/amq-client-secret/client.ks}}}"/>
+    <property name="keyStorePassword" value="${env.KEYSTORE_PASSWORD:${keystore.password:#{changeit}}}"/>
   </bean>
 
   <bean primary="true" id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
